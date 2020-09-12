@@ -1,10 +1,8 @@
-# bumpy-tip
+# HPA Desired Replicas Calculator
 
-FIXME: Write a one-line description of your library/project.
+Trying to get a better feel for how the different variables in the desired replicas calculation relate to each other.
 
-## Overview
-
-FIXME: Write a paragraph about the library/project and highlight its goals.
+For more info, see https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#algorithm-details
 
 ## Development
 
@@ -28,10 +26,3 @@ To create a production build run:
 
 	lein clean
 	lein fig:min
-
-
-## License
-
-Copyright © 2018 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.
