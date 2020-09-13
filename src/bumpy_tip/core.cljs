@@ -1,16 +1,21 @@
 (ns ^:figwheel-hooks bumpy-tip.core
   (:require
-   [goog.dom :as gdom]
-   [reagent.core :as reagent :refer [atom]]
-   [reagent.dom :as rdom]))
+    [goog.dom :as gdom]
+    [reagent.core :as reagent :refer [atom]]
+    [reagent.dom :as rdom]))
 
-(defonce app-state (atom {:current-replicas 1
+(defonce variables (atom {:current-replicas 1
                           :desired-replicas 1
                           :current-metric 1
                           :desired-metric 1}))
 
-(defn calc-desired-replicas [current-replicas current-metric desired-metric]
-  (js/Math.ceil (* current-replicas (/ current-metric desired-metric))))
+(defn calc-desired-replicas [{:keys [:current-replicas
+                                     :current-metric
+                                     :desired-metric] :as variables}]
+  (assoc
+    variables
+    :desired-replicas
+    (js/Math.ceil (* current-replicas (/ current-metric desired-metric)))))
 
 (defn slider [title property value min max]
   [:div
@@ -19,25 +24,17 @@
             :style {:width "100%"}
             :on-change (fn [e]
                          (let [new-value (js/parseInt (.. e -target -value))]
-                           (swap! app-state
+                           (swap! variables
                                   (fn [app-state]
-                                    (let [{:keys [:current-replicas :current-metric :desired-metric]}
-                                          (assoc app-state property new-value)]
-                                      (-> (assoc
-                                            app-state
-                                            :desired-replicas
-                                            (calc-desired-replicas
-                                              current-replicas
-                                              current-metric
-                                              desired-metric))
-                                          (assoc property new-value)))))))}]])
+                                    (-> (assoc app-state property new-value)
+                                        calc-desired-replicas)))))}]])
 
 (defn container []
   [:section {:class "mw5 mw7-ns center bg-light-gray pa3 ph5-ns"}
-   [slider "Desired Replicas" :desired-replicas (:desired-replicas @app-state) 1 20]
-   [slider "Current Replicas" :current-replicas (:current-replicas @app-state) 1 20]
-   [slider "Current Requests Per Second" :current-metric (:current-metric @app-state) 0 1000]
-   [slider "Desired Average Requests Per Second" :desired-metric (:desired-metric @app-state) 0 1000]])
+   [slider "Desired Replicas" :desired-replicas (:desired-replicas @variables) 1 20]
+   [slider "Current Replicas" :current-replicas (:current-replicas @variables) 1 20]
+   [slider "Current Requests Per Second" :current-metric (:current-metric @variables) 0 1000]
+   [slider "Desired Average Requests Per Second" :desired-metric (:desired-metric @variables) 0 1000]])
 
 (defn mount [el]
   (rdom/render
@@ -56,5 +53,4 @@
 
 (defn ^:after-load on-reload []
   (mount-app-element)
-  (swap! app-state update-in [:__figwheel_counter] inc)
-)
+  (swap! variables update-in [:__figwheel_counter] inc))
