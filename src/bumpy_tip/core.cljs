@@ -6,16 +6,19 @@
 
 (defonce variables (atom {:current-replicas 1
                           :desired-replicas 1
+                          :current-average-metric 1
                           :current-metric 1
-                          :desired-metric 1}))
+                          :desired-average-metric 1}))
 
 (defn calc-desired-replicas [{:keys [:current-replicas
                                      :current-metric
-                                     :desired-metric] :as variables}]
-  (assoc
-    variables
-    :desired-replicas
-    (js/Math.ceil (* current-replicas (/ current-metric desired-metric)))))
+                                     :desired-average-metric] :as variables}]
+  (let [current-average-metric (js/Math.ceil (/ current-metric current-replicas))]
+    (-> (assoc
+          variables
+          :desired-replicas
+          (js/Math.ceil (* current-replicas (/ current-average-metric desired-average-metric))))
+        (assoc :current-average-metric current-average-metric))))
 
 (defn slider [title property min max]
   (let [value (property @variables)]
@@ -32,10 +35,12 @@
 
 (defn container []
   [:section {:class "mw5 mw7-ns center bg-light-gray pa3 ph5-ns"}
-   [slider "Desired Replicas" :desired-replicas 1 20]
+   [:h3 {:class "tc"} (str "Desired Replicas: " (:desired-replicas @variables))]
+   [:h3 {:class "tc"} (str "Current Average Request Count: " (:current-average-metric @variables))]
+   #_[slider "Desired Replicas" :desired-replicas 1 20]
    [slider "Current Replicas" :current-replicas 1 20]
    [slider "Current Request Count" :current-metric 0 1000]
-   [slider "Desired Average Request Count" :desired-metric 0 1000]])
+   [slider "Desired Average Request Count" :desired-average-metric 0 1000]])
 
 (defn mount [el]
   (rdom/render
