@@ -1,4 +1,4 @@
-(ns ^:figwheel-hooks bumpy-tip.core
+(ns ^:figwheel-hooks hpa-calc.core
   (:require
     [goog.dom :as gdom]
     [reagent.core :as reagent :refer [atom]]
