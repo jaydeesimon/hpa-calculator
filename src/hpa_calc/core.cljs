@@ -35,6 +35,20 @@
 
 (defn container []
   [:section {:class "mw5 mw7-ns center bg-light-gray pa3 ph5-ns"}
+   [:h3 {:class "tc"}
+    (let [current-replicas (:current-replicas @variables)
+          desired-replicas (:desired-replicas @variables)
+          [color phrase]
+          (cond
+            (= current-replicas desired-replicas)
+            ["green" "Optimal"]
+
+            (< current-replicas desired-replicas)
+            ["red" "Underprovisioned"]
+
+            :else
+            ["orange" "Overprovisioned"])]
+      [:span {:class color} phrase])]
    [:h3 {:class "tc"} (str "Desired Replicas: " (:desired-replicas @variables))]
    [:h3 {:class "tc"} (str "Current Average Request Count: " (:current-average-metric @variables))]
    #_[slider "Desired Replicas" :desired-replicas 1 20]
