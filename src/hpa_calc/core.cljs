@@ -52,16 +52,16 @@
           [color phrase] (replicas-color-phrase current-replicas desired-replicas)]
       [:span {:class color} phrase])]
    [:h3 {:class "tc"} (str "Desired Replicas: " (:desired-replicas @variables))]
-   [:h3 {:class "tc"} (str "Current Average Request Count: " (:current-average-metric @variables))]
+   [:h3 {:class "tc"} (str "Current Avg Request Count: " (:current-average-metric @variables))]
    [slider "Current Replicas" :current-replicas 1 20]
    [slider "Current Request Count" :current-metric 0 300]
-   [slider "Desired Average Request Count" :desired-average-metric 0 100]
+   [slider "Desired Avg Request Count" :desired-average-metric 0 100]
    [:div {:class "ph0 courier f6 pa3"}
     [:h4 {:class "pa0 f6 ph0"} "Notes"]
     [:ul {:class "ph3"}
      [:li {:class "ph0 pa2"} "The above is based on the " [:a {:target "_blank" :href "https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#algorithm-details"} "HPA formula"] "."]
-     [:li {:class "ph0 pa2"} "Current Average Request Count = ceil(Current Request Count / Current Replicas)"]
-     [:li {:class "ph0 pa2"} "Desired Average Request Count is the target average value, the amount of traffic each replica will handle."]
+     [:li {:class "ph0 pa2"} "Current Avg Request Count = ceil(Current Request Count / Current Replicas)"]
+     [:li {:class "ph0 pa2"} "Desired Avg Request Count is the target average value, the amount of traffic each replica will handle."]
      [:li {:class "ph0 pa2"} "Current Request Count is the raw metric value pulled from Datadog."]]]])
 
 (defn mount [el]
