@@ -57,9 +57,9 @@
    [slider "Current Request Count" :current-metric 0 300]
    [slider "Desired Avg Request Count" :desired-average-metric 0 100]
    [:div {:class "ph0 courier f6 pa3"}
-    [:h4 {:class "pa0 f6 ph0"} "Notes"]
+    [:h4 {:class "pa0 f6 ph0 tc"} "Notes"]
     [:ul {:class "ph3"}
-     [:li {:class "ph0 pa2"} "The above is based on the " [:a {:target "_blank" :href "https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#algorithm-details"} "HPA formula"] "."]
+     [:li {:class "ph0 pa2"} "The above is based on " [:a {:target "_blank" :href "https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#algorithm-details"} "this formula"] "."]
      [:li {:class "ph0 pa2"} "Current Avg Request Count = ceil(Current Request Count / Current Replicas)"]
      [:li {:class "ph0 pa2"} "Desired Avg Request Count is the target average value, the amount of traffic each replica will handle."]
      [:li {:class "ph0 pa2"} "Current Request Count is the raw metric value pulled from Datadog."]]]])
