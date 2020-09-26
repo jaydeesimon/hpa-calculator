@@ -1,6 +1,6 @@
 # HPA Desired Replicas Calculator
 
-<img src="screenshot.png" width="80%" />
+<img src="screenshot.png" width="60%" />
 
 Trying to get a better feel for how the different variables in the desired replicas calculation relate to each other.
 
